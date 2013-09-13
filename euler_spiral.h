@@ -1,5 +1,13 @@
-#ifndef _EULER_CURVE_H_
-#define _EULER_CURVE_H_
+//
+//  euler_spiral.h
+//  Euler Spiral
+//
+//  Created by Sidakpreet Singh Chawla on 13/09/13.
+//  Copyright (c) 2013 Sidakpreet Singh Chawla. All rights reserved.
+//
+
+#ifndef _EULER_SPIRAL_H_
+#define _EULER_SPIRAL_H_
 
 
 
@@ -25,7 +33,7 @@
  * 			So the purpose is to find k, gamma and the length of the curve
  */
 
-class EulerCurve{
+class EulerSpiral{
 	
 private:
 	
@@ -112,7 +120,7 @@ private:
 
 
 	// ---------------------------------------------------------------------------
-	// 						Euler Curve Formation
+	// 						Euler Spiral Estimation
 	// ---------------------------------------------------------------------------
 
 	/* @Brief : Function to apply gradient descent for calculation of the euler curve parameters
@@ -163,7 +171,7 @@ private:
 	int EulerSpiralEndPoint(double a, double b, double theta, double k, double gamma, double s, double &x, double &y);					
 	
 public:
-	EulerCurve(){
+	EulerSpiral(){
 		integral_steps=1000; // Setting the no. of divisions for numerical integraion of fresnel integration
 	}
 	
@@ -215,7 +223,7 @@ public:
 
 
 
-int EulerCurve::fresnel(double x, double &costerm, double &sinterm){
+int EulerSpiral::fresnel(double x, double &costerm, double &sinterm){
 	costerm=0;
 	sinterm=0;
 	costerm += ( cos(0) + cos( (x*x) ) ) /2;
@@ -231,7 +239,7 @@ int EulerCurve::fresnel(double x, double &costerm, double &sinterm){
 return 0;
 }
 
-double EulerCurve::min4(double a, double b, double c, double d){
+double EulerSpiral::min4(double a, double b, double c, double d){
 
 	if( a <= b && a <= c && a<=d )
 		return a;
@@ -245,7 +253,7 @@ double EulerCurve::min4(double a, double b, double c, double d){
 return d;
 }
 
-double EulerCurve::min3(double a, double b, double c){
+double EulerSpiral::min3(double a, double b, double c){
 
 	if( a <= b && a <= c)
 		return a;
@@ -256,7 +264,7 @@ double EulerCurve::min3(double a, double b, double c){
 return c;
 }
 	 
-double EulerCurve::AngleOfVector(double x, double y){
+double EulerSpiral::AngleOfVector(double x, double y){
 	double angle = atan2(y,x);
 	if( angle < 0 ){
 		angle = angle + 2*PI;
@@ -264,14 +272,14 @@ double EulerCurve::AngleOfVector(double x, double y){
 return angle;
 }
 
-double EulerCurve::ComputeJoinTheta( double x0, double y0, double theta0, double x2, double y2, double theta2, double k1, double k2){
+double EulerSpiral::ComputeJoinTheta( double x0, double y0, double theta0, double x2, double y2, double theta2, double k1, double k2){
 	double sin_thetaJoin = ( k1*k2*(x2-x0) + k2*sin(theta0) -k1*sin(theta2) )/(k2-k1);
 	double cos_thetaJoin = ( k1*k2*(y2-y0) + k2*cos(theta0) -k1*cos(theta2) )/(k2-k1);
 
 return AngleOfVector(sin_thetaJoin,cos_thetaJoin);
 }
 
-double EulerCurve::ComputeArcLength(double theta0, double theta1, double k){
+double EulerSpiral::ComputeArcLength(double theta0, double theta1, double k){
 	double numerator = theta1-theta0;
 	if( k < 0 &&  numerator > 0){
 		numerator = numerator - 2*PI;
@@ -284,7 +292,7 @@ return numerator/k;
 
 
 
-int EulerCurve::ComputeBiarcSolution(double x0, double y0, // Start point coordinates
+int EulerSpiral::ComputeBiarcSolution(double x0, double y0, // Start point coordinates
 						 double x2, double y2, // End point coordinates
 						 double theta0, double theta2, // The initial and final angles respectively
 						 double &estimateK, double &estimatel) // To be calculated
@@ -396,7 +404,7 @@ int EulerCurve::ComputeBiarcSolution(double x0, double y0, // Start point coordi
 return 0;
 }
 
-double EulerCurve::ComputeError(double x0, double y0, double theta0, double x2, double y2, double theta2, double k, double L){
+double EulerSpiral::ComputeError(double x0, double y0, double theta0, double x2, double y2, double theta2, double k, double L){
 	double ex, ey;
 	double gamma = 2*(theta2-theta0 - k*L) /(L*L);
 	EulerSpiralEndPoint(x0, y0, theta0, k, gamma, L, ex, ey);
@@ -404,7 +412,7 @@ return sqrt( (ex-x2)*(ex-x2) + (ey-y2)*(ey-y2) );
 }
 
 
-int EulerCurve::EulerSpiralEndPoint(double a, double b, double theta, double k, double gamma, double s, double &x, double &y){
+int EulerSpiral::EulerSpiralEndPoint(double a, double b, double theta, double k, double gamma, double s, double &x, double &y){
 	double epsilon = 0.00001;
 	double constTerm = 0;
 	double fc, fs, sc, ss;
@@ -452,7 +460,7 @@ return 0;
 }
 
 
-int EulerCurve::SolveIteratively(double x0, double y0, double theta0, 
+int EulerSpiral::SolveIteratively(double x0, double y0, double theta0, 
 				     double x1, double y1, double theta2, 
 				     double estimateK, double estimateL,
 				     int iternum,
@@ -514,7 +522,7 @@ int EulerCurve::SolveIteratively(double x0, double y0, double theta0,
 }
 
 
-int EulerCurve::SolveEuler( double x0, double y0, double theta0, 
+int EulerSpiral::SolveEuler( double x0, double y0, double theta0, 
 				double x2, double y2, double theta2, 
 				int iternum,
 				double &Kfin, double &Lfin, double &Gfin){
