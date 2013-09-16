@@ -1,6 +1,11 @@
 Euler-Spiral
 ============
 
+Source:
+Euler Spiral for Shape Completion
+BENJAMIN B. KIMIA, ILANA FRANKEL AND ANA-MARIA POPESCU
+Division of Engineering, Brown University, Providence, R1 02912, USA
+
 Takes the initial and final postion+orientataion. 
 Returns the Euler Spiral parameters k, gamma and curve length with the equations:
     Curvature K(s) = gamma*s + k (Here s is the arc length)
